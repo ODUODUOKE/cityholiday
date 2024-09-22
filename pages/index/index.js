@@ -38,12 +38,68 @@ Page({
   },
   // 点击图片
   onImageClick: function(e) {
-    console.log('Image clicked', e);
+
+
+      let that = this;
+
     wx.showToast({
       title: 'Image clicked!',
       icon: 'none'
     });
+
+      const timestamp = Date.now();
+
+    // 获取base64本地图片获取路径
+      var base64 =  e.currentTarget.dataset.img;//base64格式图片
+      var imgPath = wx.env.USER_DATA_PATH+'/index_'+timestamp+ '.png';
+      //如果图片字符串不含要清空的前缀,可以不执行下行代码.
+      var imageData = base64.replace(/^data:image\/\w+;base64,/, "");
+      var fs = wx.getFileSystemManager();
+      fs.writeFileSync(imgPath, imageData, "base64");
+      console.log('打印本地base64图片路径：',imgPath);
+
+    wx.downloadFile({
+      url: that.data.userInfo.avatarUrl,
+      success(res) {
+
+        console.log('下载图片res：',res.tempFilePath);
+
+
+          // 绘制背景海报到canvas
+          //var postersize = this.setCanvasSize(750);//动态设置画布大小
+          const ctx = wx.createCanvasContext('shareCanvas',that)
+          ctx.drawImage(res.tempFilePath, 0, 0, 200, 200)
+          ctx.drawImage(imgPath, 0, 0, 200, 200)
+
+          ctx.draw(false, () => {
+              wx.canvasToTempFilePath({
+                  canvasId: 'shareCanvas',
+                  success: function(res) {
+                      var tempFilePath = res.tempFilePath;
+                      console.log(tempFilePath);
+                  },
+                  fail: function(err) {
+                      console.error('canvasToTempFilePath failed:', err);
+                  }
+              });
+          });
+
+      },
+        fail(err) {
+            console.error('下载图片失败：', err);
+        }
+
+
+    })
+
+
+
+
+
+
+
     this.selectTemplate();
+    
   },
   bindViewTap() {
     // wx.navigateTo({

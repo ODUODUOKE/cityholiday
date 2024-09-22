@@ -26,14 +26,14 @@
     <!-- 备注 -->
     <view class="usermotto">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <!-- <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           授权微信头像
-        </button> -->
-
-<!-- 临时测试 -->
-        <button bindtap="selectTemplate" >
-                  选择模板
         </button>
+
+        <!-- 临时测试 -->
+        <!-- <button bindtap="selectTemplate" >
+                  选择模板
+        </button> -->
 
       </block>
       <block wx:else>
@@ -43,6 +43,7 @@
       </block>
     </view>
 
+<canvas canvas-id="shareCanvas" style="width: 360px; height: 200px;"></canvas>
 
 
   </view>
@@ -50,13 +51,13 @@
       <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
 
 <view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick" data-img="{{templateImage.img_1001}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick" data-img="{{templateImage.img_1007}}"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick" data-img="{{templateImage.img_1008}}" ></image>
 
 
 
