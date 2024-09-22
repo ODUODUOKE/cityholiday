@@ -1,6 +1,8 @@
 <!--index.wxml-->
 <scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
+  <view wx:if="{{!showTemplate}}" class="container">
+
+  <!-- 头像 -->
     <view class="userinfo">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
         <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
@@ -12,12 +14,53 @@
         <view wx:else> 请使用2.10.4及以上版本基础库 </view>
       </block>
       <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+ 
+      
+      <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+      </button>
+    
       </block>
     </view>
+
+    <!-- 备注 -->
     <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+        <!-- <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          授权微信头像
+        </button> -->
+
+<!-- 临时测试 -->
+        <button bindtap="selectTemplate" >
+                  选择模板
+        </button>
+
+      </block>
+      <block wx:else>
+        <button bindtap="selectTemplate" >
+          选择模板
+        </button>
+      </block>
     </view>
+
+
+
   </view>
+      <!-- 模板框 -->
+      <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
+
+<view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick"></image>
+  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick"></image>
+
+
+
+
+</view>
+</view>
 </scroll-view>
