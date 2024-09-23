@@ -20,3 +20,4 @@
 ## 问题解决
 
 - [base64图片存本地(得到本地路径)](https://developers.weixin.qq.com/community/develop/doc/0002c20d360220f03a975772d51804)
+- [微信小程序图片裁剪功能的实现](https://blog.csdn.net/jimojianghu/article/details/129408840)

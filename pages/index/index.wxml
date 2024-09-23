@@ -8,18 +8,19 @@
         <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
         </button>
+       
       </block>
       <block wx:elif="{{!hasUserInfo}}">
         <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
         <view wx:else> 请使用2.10.4及以上版本基础库 </view>
       </block>
       <block wx:else>
- 
-      
-      <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+   
+      <!-- <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-      </button>
-    
+      </button> -->
+      <image wx:if="{{!hasNewImg}}" class="avatar" src="{{userInfo.avatarUrl}}"></image>
+      <canvas class="avatar" canvas-id="shareCanvas" ></canvas>
       </block>
     </view>
 
@@ -43,7 +44,21 @@
       </block>
     </view>
 
-<canvas canvas-id="shareCanvas" style="width: 360px; height: 200px;"></canvas>
+<view wx:if="{{imagePath}}" class="crop-container">
+  <view class="crop-content" style="width: {{panelWidth + 'px'}}; height: {{panelHeight + 'px'}};">
+    <image src="{{imagePath}}" class="pos-absolute" style="width: {{panelWidth + 'px'}}; height: {{panelHeight + 'px'}}; left: 0; top:0;"/>
+    <view class="mask-bg" style="width: {{panelWidth + 'px'}}; height: {{panelHeight + 'px'}}; left: 0; top: 0;"></view>
+    <view class="clip-path" style="width: {{clipWidth + 'px'}}; height: {{clipHeight + 'px'}}; left: {{clipX + 'px'}}; top: {{clipY + 'px'}};">
+      <image src="{{imagePath}}" class="pos-absolute" style="width: {{panelWidth + 'px'}}; height: {{panelHeight + 'px'}}; left: {{clipImgX + 'px'}}; top: {{clipImgY + 'px'}};"/>
+    </view>
+    <view class="clip-box"  bind:touchmove="touchmoveM" bind:touchstart="touchstartM" style="width: {{clipWidth + 'px'}}; height: {{clipHeight + 'px'}}; left: {{clipX + 'px'}}; top: {{clipY + 'px'}};">
+      <view capture-catch:touchmove="touchmove" capture-catch:touchstart="touchstart" data-id="leftTop" class="corner-area left-top"></view>
+      <view capture-catch:touchmove="touchmove" capture-catch:touchstart="touchstart" data-id="rightTop" class="corner-area right-top"></view>
+      <view capture-catch:touchmove="touchmove" capture-catch:touchstart="touchstart" data-id="rightBottom" class="corner-area right-bottom"></view>
+      <view capture-catch:touchmove="touchmove" capture-catch:touchstart="touchstart" data-id="leftBottom" class="corner-area left-bottom"></view>
+    </view>
+  </view>
+</view>
 
 
   </view>
@@ -51,13 +66,13 @@
       <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
 
 <view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick" data-img="{{templateImage.img_1001}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick" data-img="{{templateImage.img_1007}}"></image>
-  <image class="avatar" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick" data-img="{{templateImage.img_1008}}" ></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick" data-img="{{templateImage.img_1001}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick" data-img="{{templateImage.img_1007}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick" data-img="{{templateImage.img_1008}}" ></image>
 
 
 

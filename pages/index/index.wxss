@@ -19,8 +19,8 @@ page {
 
 .userinfo-avatar {
   overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
+  width: 400rpx;
+  height: 400rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
@@ -31,7 +31,7 @@ page {
 
 .avatar-wrapper {
   padding: 0;
-  width: 56px !important;
+  /* width: 56px !important; */
   border-radius: 8px;
   margin-top: 40px;
   margin-bottom: 40px;
@@ -39,8 +39,14 @@ page {
 
 .avatar {
   display: block;
-  width: 56px;
-  height: 56px;
+  width: 200px;
+  height: 200px;
+}
+
+.avatar_template {
+  display: block;
+  width: 50px;
+  height: 50px;
 }
 
 .nickname-wrapper {
