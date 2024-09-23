@@ -88,10 +88,8 @@ Page({
                           var tempFilePath = res.tempFilePath;
                           that.data.userInfo.avatarUrl = tempFilePath;
 
-                          // that.data.hasNewImg = !that.setData().hasNewImg;
-
                           that.setData({
-                              hasNewImg: !that.data.hasNewImg
+                              hasNewImg: true
                           });
 
                           console.log('hasNewImg:',that.data.hasNewImg);

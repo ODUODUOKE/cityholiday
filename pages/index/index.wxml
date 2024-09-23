@@ -28,7 +28,7 @@
     <view class="usermotto">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
         <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          授权微信头像
+          选择头像
         </button>
 
         <!-- 临时测试 -->
