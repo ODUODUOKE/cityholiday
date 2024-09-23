@@ -30,12 +30,14 @@
         <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           选择头像
         </button>
-
-        <!-- 临时测试 -->
-        <!-- <button bindtap="selectTemplate" >
-                  选择模板
-        </button> -->
-
+      </block>
+      <block wx:elif="{{ hasUserInfo && hasNewImg}}">
+        <button bindtap="selectTemplate" >
+          重新选择
+        </button>
+        <button style="margin: 10px;background-color:#04BE02;" bindtap="saveImgae" >
+          保存相册
+        </button>
       </block>
       <block wx:else>
         <button bindtap="selectTemplate" >

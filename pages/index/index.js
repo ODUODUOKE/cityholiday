@@ -43,6 +43,21 @@ Page({
       showTemplate: !this.data.showTemplate
     })
   },
+  saveImgae: function(){
+  // 你可以在这里执行进一步的操作，例如将图片保存到相册
+  wx.saveImageToPhotosAlbum({
+      filePath: this.data.userInfo.avatarUrl,
+      success: function() {
+          wx.showToast({
+              title: '图片已保存到相册',
+              icon: 'success'
+          });
+      },
+      fail: function(err) {
+          console.error('保存图片失败:', err);
+      }
+  });
+  },
   // 点击图片
   onImageClick: function(e) {
 
