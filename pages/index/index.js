@@ -61,7 +61,6 @@ Page({
   // 点击图片
   onImageClick: function(e) {
 
-
     let that = this;
 
     wx.showToast({
@@ -80,73 +79,35 @@ Page({
       fs.writeFileSync(imgPath, imageData, "base64");
       console.log('打印本地base64图片路径：',imgPath);
 
+      console.log('wx头像地址：',that.data.userInfo.avatarUrl);
 
-      wx.downloadFile({
-          url: that.data.userInfo.avatarUrl,
-          success(res) {
+      // 绘制背景海报到canvas
+      const ctx = wx.createCanvasContext('shareCanvas',that)
+      // 背景图片
+      ctx.drawImage(that.data.userInfo.avatarUrl, 0, 0, 200, 200)
+      // 模板图片
+      ctx.drawImage(imgPath, 0, 0, 200, 200)
 
-              console.log('下载图片res：',res.tempFilePath);
+      ctx.draw(false, () => {
+          wx.canvasToTempFilePath({
+              canvasId: 'shareCanvas',
+              success: function(res) {
+                console.log('canvasToTempFilePath:',res);
 
-              // 绘制背景海报到canvas
-              const ctx = wx.createCanvasContext('shareCanvas',that)
-              // 背景图片
-              ctx.drawImage(res.tempFilePath, 0, 0, 200, 200)
-              // 模板图片
-              ctx.drawImage(imgPath, 0, 0, 200, 200)
+                  var tempFilePath = res.tempFilePath;
+                  that.data.userInfo.avatarUrl = tempFilePath;
 
-              ctx.draw(false, () => {
-                  wx.canvasToTempFilePath({
-                      canvasId: 'shareCanvas',
-                      success: function(res) {
-                        console.log('canvasToTempFilePath:',res);
-
-                          var tempFilePath = res.tempFilePath;
-                          that.data.userInfo.avatarUrl = tempFilePath;
-
-                          that.setData({
-                              hasNewImg: true
-                          });
-
-                          console.log('hasNewImg:',that.data.hasNewImg);
-
-                        //   wx.getImageInfo({
-                        //     src: tempFilePath,
-                        //     success: function (res) {
-                        //         that.data.imginfo.width = res.width;
-                        //         that.data.imginfo.height = res.height;
-                        //         console.log('imgwidth：',that.data.imginfo.width);
-                        //         console.log('imgheight：',that.data.imginfo.width);
-                        //     }
-                        // })
-
-                          // 你可以在这里执行进一步的操作，例如将图片保存到相册
-                          // wx.saveImageToPhotosAlbum({
-                          //     filePath: tempFilePath,
-                          //     success: function() {
-                          //         wx.showToast({
-                          //             title: '图片已保存到相册',
-                          //             icon: 'success'
-                          //         });
-                          //     },
-                          //     fail: function(err) {
-                          //         console.error('保存图片失败:', err);
-                          //     }
-                          // });
-
-                      },
-                      fail: function(err) {
-                          console.error('canvasToTempFilePath failed:', err);
-                      }
+                  that.setData({
+                      hasNewImg: true
                   });
-              });
 
-          },
-          fail(err) {
-              console.error('下载图片失败：', err);
-          }
-      })
-
-      
+                  console.log('hasNewImg:',that.data.hasNewImg);
+              },
+              fail: function(err) {
+                  console.error('canvasToTempFilePath failed:', err);
+              }
+          });
+      });
 
       this.selectTemplate();
 
