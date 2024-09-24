@@ -17,6 +17,16 @@ page {
   width: 80%;
 }
 
+.text{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  color: rgba(0, 0, 0, 0.767);
+  width: 100%;
+  margin: 5px;
+}
+
 .userinfo-avatar {
   overflow: hidden;
   width: 400rpx;

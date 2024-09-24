@@ -5,7 +5,7 @@
   <!-- 头像 -->
     <view class="userinfo">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
         </button>
 
@@ -26,18 +26,20 @@
 
     <!-- 备注 -->
     <view class="usermotto">
+   
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+        
         <!-- 微信侧获取头像的过于模糊 -->
-        <!-- <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          选择头像
-        </button> -->
-        <button style="margin: 0px;" bindtap="uploadImg">
-          选择图片
+        <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          微信头像
+        </button>
+        <button style="margin: 10px;" bindtap="uploadImg">
+          本地图片
         </button>
       </block>
       <block wx:elif="{{ hasUserInfo && hasNewImg}}">
         <button bindtap="selectTemplate" >
-          重新选择
+          重选模板
         </button>
         <button style="margin: 10px;background-color:#05be02f3;" bindtap="saveImgae" >
           保存相册
@@ -49,7 +51,14 @@
         </button>
       </block>
     </view>
- 
+
+    <view wx:if="{{canIUseNicknameComp && !hasUserInfo}}" class="text"> 
+      <text>1.微信头像请选择第一个按钮</text>
+      <text>2.高清头像请选择第二个按钮</text>
+      <text>3.应用未采集用户信息及数据</text>
+      <!-- <text>4.项目开源 cityholiday </text> -->
+    </view>
+
   </view>
       <!-- 模板框 -->
       <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
