@@ -8,14 +8,14 @@
         <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
         </button>
-       
+
       </block>
       <block wx:elif="{{!hasUserInfo}}">
         <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
         <view wx:else> 请使用2.10.4及以上版本基础库 </view>
       </block>
       <block wx:else>
-   
+
       <!-- <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
       </button> -->
@@ -32,9 +32,9 @@
         </button>
       </block>
       <block wx:elif="{{ hasUserInfo && hasNewImg}}">
-        <button bindtap="selectTemplate" >
+        <!-- <button bindtap="selectTemplate" >
           重新选择
-        </button>
+        </button> -->
         <button style="margin: 10px;background-color:#04BE02;" bindtap="saveImgae" >
           保存相册
         </button>
@@ -72,13 +72,6 @@
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1007}}" bindtap="onImageClick" data-img="{{templateImage.img_1007}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1008}}" bindtap="onImageClick" data-img="{{templateImage.img_1008}}" ></image>
-
-
-
-
 </view>
 </view>
 </scroll-view>
