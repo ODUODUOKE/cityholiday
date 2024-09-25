@@ -180,4 +180,23 @@ Page({
       }
     })
   },
+  onLoad() {
+    // "shareAppMessage"表示“发送给朋友”按钮，"shareTimeline"表示“分享到朋友圈”按钮
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline'],// 需要显示的转发按钮名称列表.合法值包含 "shareAppMessage"、"shareTimeline"
+      success(res) {
+        console.log(res);
+      },
+      fail(e) {
+        console.log(e);
+      }
+    });
+  },
+  onShareAppMessage() {
+    return {
+      title: '柿柿看呀，换个头像~', // 分享出的卡片标题
+      path: 'pages/index/index', // 他人通过卡片进入小程序的路径，可以在后面拼接URL的形式带参数
+      imageUrl: '/share/share.png', // 分享出去的图片，默认为当前页面的截图。图片路径可以是本地文件路径或者网络图片路径。支持PNG及JPG。
+    };
+  },
 })
