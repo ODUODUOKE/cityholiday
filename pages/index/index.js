@@ -1,7 +1,7 @@
-// index.js
-const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
-
-import {templateImage} from '../../utils/headTemplate.js'
+// 引入头像模板文件
+import {defaultImg,templateImage} from '../../utils/headTemplate.js'
+// 默认头像
+const defaultAvatarUrl = defaultImg.InitUserImg;
 
 Page({
   data: {
@@ -14,7 +14,7 @@ Page({
       // 昵称
       nickName: '',
       // 临时头像，缓存
-      tmpAvatarUrl: '' 
+      tmpAvatarUrl: ''
     },
     // 引用js文件，头像模板base64编码文件
     templateImage,
@@ -35,22 +35,22 @@ Page({
   selectTemplate: function() {
     this.setData({
       showTemplate: !this.data.showTemplate
-    }) 
+    })
   },
   saveImgae: function(){
-  // 你可以在这里执行进一步的操作，例如将图片保存到相册
-  wx.saveImageToPhotosAlbum({
-      filePath: this.data.userInfo.avatarUrl,
-      success: function() {
-          wx.showToast({
-              title: '图片已保存到相册',
-              icon: 'success'
-          });
-      },
-      fail: function(err) {
-          console.error('保存图片失败:', err);
-      }
-  });
+    // 你可以在这里执行进一步的操作，例如将图片保存到相册
+    wx.saveImageToPhotosAlbum({
+        filePath: this.data.userInfo.avatarUrl,
+        success: function() {
+            wx.showToast({
+                title: '图片已保存到相册',
+                icon: 'success'
+            });
+        },
+        fail: function(err) {
+            console.error('保存图片失败:', err);
+        }
+    });
   },
   // 点击图片
   onImageClick: function(e) {
@@ -79,7 +79,7 @@ Page({
 
       // 绘制背景海报到canvas
       const ctx = wx.createCanvasContext('shareCanvas',that)
-      
+
       let imgUrl;
       if( that.data.userInfo.tmpAvatarUrl=='' ){
         imgUrl = that.data.userInfo.avatarUrl;
@@ -126,7 +126,7 @@ Page({
 			count: 1, // 最多可以选择的文件个数
 			mediaType: ['image'], // 文件类型
 			sizeType: ['original'], // 是否压缩所选文件
-			sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+			sourceType: ['album'], // 可以指定来源是相册`album`还是相机`camera`，默认二者都有
 			success(result) {
         that.setData({
           "userInfo.avatarUrl": result.tempFiles[0].tempFilePath,
@@ -136,14 +136,22 @@ Page({
 
 		})
   },
-  bindViewTap() {
-    // wx.navigateTo({
-    //   url: '../logs/logs'
-    // })
+  // 重选图片
+  restPhoto: function (){
+
+    this.setData({
+      hidden: false
+    });
+
+    setTimeout(() => {
+      wx.reLaunch({
+        url: '/pages/index/index'
+      });
+    }, 500);
+
   },
   onChooseAvatar(e) {
     const { avatarUrl } = e.detail
-    const { nickName } = this.data.userInfo
     this.setData({
       "userInfo.avatarUrl": avatarUrl,
       hasUserInfo: avatarUrl !== defaultAvatarUrl,

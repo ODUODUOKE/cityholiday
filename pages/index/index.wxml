@@ -2,33 +2,18 @@
 <scroll-view class="scrollarea" scroll-y type="list">
   <view wx:if="{{!showTemplate}}" class="container">
 
-  <!-- 头像 -->
     <view class="userinfo">
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
       </block>
       <block wx:else>
-
-      <!-- <button disabled class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-      </button> -->
-      <image wx:if="{{!hasNewImg}}" class="avatar" src="{{userInfo.avatarUrl}}"></image>
-      <canvas class="avatar" canvas-id="shareCanvas" ></canvas>
+          <image wx:if="{{!hasNewImg}}" class="avatar" src="{{userInfo.avatarUrl}}"></image>
+          <canvas class="avatar" canvas-id="shareCanvas" ></canvas>
       </block>
     </view>
 
-    <!-- 备注 -->
-    <view class="usermotto">
-   
+    <view class="usermotto">   
       <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        
         <!-- 微信侧获取头像的过于模糊 -->
         <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           微信头像
@@ -38,7 +23,10 @@
         </button>
       </block>
       <block wx:elif="{{ hasUserInfo && hasNewImg}}">
-        <button bindtap="selectTemplate" >
+        <button bindtap="restPhoto" >
+          重选照片
+        </button>
+        <button style="margin: 10px;" bindtap="selectTemplate" >
           重选模板
         </button>
         <button style="margin: 10px;background-color:#05be02f3;" bindtap="saveImgae" >
@@ -56,7 +44,6 @@
       <text>1.微信头像请选择第一个按钮</text>
       <text>2.高清头像请选择第二个按钮</text>
       <text>3.应用未采集用户信息及数据</text>
-      <!-- <text>4.项目开源 cityholiday </text> -->
     </view>
 
   </view>
@@ -68,6 +55,8 @@
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
+ 
 </view>
 </view>
 
