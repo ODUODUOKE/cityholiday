@@ -10,7 +10,7 @@ Page({
     // 用户信息
     userInfo: {
       // 头像
-      avatarUrl: defaultAvatarUrl!=null?defaultAvatarUrl:'',
+      avatarUrl: defaultAvatarUrl,
       // 昵称
       nickName: '',
       // 临时头像，缓存
@@ -27,9 +27,9 @@ Page({
     // 是否有用户信息
     hasUserInfo: false,
     // 是否可以使用getUserProfile
-    canIUseGetUserProfile: wx.canIUse('getUserProfile'),
+    //canIUseGetUserProfile: wx.canIUse('getUserProfile'),
     // 是否可以使用button.open-type.getUserInfo
-    canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+    //canIUseNicknameComp: wx.canIUse('input.type.nickname'),
   },
   // 选择模板
   selectTemplate: function() {
@@ -53,16 +53,9 @@ Page({
     });
   },
   // 点击图片
-  onImageClick: function(e) {
-
-    let that = this;
-
-    // wx.showToast({
-    //   title: 'Image clicked!',
-    //   icon: 'none'
-    // });
-
-      that.setData({
+  onImageClick2: function(e) {
+  
+      this.setData({
         hidden: false, // 打开微信弹窗loding
         hasNewImg: true // 设置存在新图片
       });
@@ -77,42 +70,18 @@ Page({
       var fs = wx.getFileSystemManager();
       fs.writeFileSync(imgPath, imageData, "base64");
 
-      // 绘制背景海报到canvas
-      const ctx = wx.createCanvasContext('shareCanvas',that)
-
       let imgUrl;
-      if( that.data.userInfo.tmpAvatarUrl=='' ){
-        imgUrl = that.data.userInfo.avatarUrl;
+      if( this.data.userInfo.tmpAvatarUrl=='' ){
+        imgUrl = this.data.userInfo.avatarUrl;
       }else{
-        imgUrl = that.data.userInfo.tmpAvatarUrl;
+        imgUrl = this.data.userInfo.tmpAvatarUrl;
       }
-      // 背景图片
-      ctx.drawImage(imgUrl, 0, 0, 200, 200)
-      // 模板图片
-      ctx.drawImage(imgPath, 0, 0, 200, 200)
-      ctx.draw( false, () => {
-          wx.canvasToTempFilePath({
-              canvasId: 'shareCanvas',
-              success: function(res) {
-                console.log('合并图片地址:',res);
-                var tempFilePath = res.tempFilePath;
+       
+      this.canvasDraw(imgUrl,imgPath);
 
-                // 头像地址
-                that.data.userInfo.avatarUrl = tempFilePath;
-                // 延时1秒（3000毫秒）后执行
-                setTimeout(() => {
-                  that.setData({
-                    // 隐藏loading
-                    hidden: true,
-                    // 临时头像地址
-                    "userInfo.tmpAvatarUrl": imgUrl,
-                  });
-                }, 300);
-              },
-              fail: function(err) {
-                  console.error('canvasToTempFilePath failed:', err);
-              }
-          });
+      this.setData({
+        hidden: true, // 关闭微信弹窗loding
+        // hasNewImg: true // 设置存在新图片
       });
 
       // 关闭选择模板
@@ -132,8 +101,11 @@ Page({
           "userInfo.avatarUrl": result.tempFiles[0].tempFilePath,
           hasUserInfo: true
         })
-			},
 
+        //向画布载入图片的方法 
+        that.canvasDrawSignImg(result.tempFiles[0].tempFilePath);
+
+			},
 		})
   },
   // 重选图片
@@ -152,33 +124,22 @@ Page({
   },
   onChooseAvatar(e) {
     const { avatarUrl } = e.detail
+
+    console.log("获取微信授权头像:",avatarUrl);
+    this.canvasDrawSignImg(avatarUrl);
+
     this.setData({
       "userInfo.avatarUrl": avatarUrl,
-      hasUserInfo: avatarUrl !== defaultAvatarUrl,
+      hasUserInfo: true,
     })
-  },
-  onInputChange(e) {
-    const nickName = e.detail.value
-    const { avatarUrl } = this.data.userInfo
-    this.setData({
-      "userInfo.nickName": nickName,
-      hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-    })
-  },
-  getUserProfile(e) {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        console.log(res)
 
-        console.log('打印获取用户信息:',res);
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    })
+  },
+  onShareAppMessage() {
+    return {
+      title: '柿柿看呀，换个头像~', // 分享出的卡片标题
+      path: 'pages/index/index', // 他人通过卡片进入小程序的路径，可以在后面拼接URL的形式带参数
+      imageUrl: '/share/share.png', // 分享出去的图片，默认为当前页面的截图。图片路径可以是本地文件路径或者网络图片路径。支持PNG及JPG。
+    };
   },
   onLoad() {
     // "shareAppMessage"表示“发送给朋友”按钮，"shareTimeline"表示“分享到朋友圈”按钮
@@ -192,11 +153,72 @@ Page({
       }
     });
   },
-  onShareAppMessage() {
-    return {
-      title: '柿柿看呀，换个头像~', // 分享出的卡片标题
-      path: 'pages/index/index', // 他人通过卡片进入小程序的路径，可以在后面拼接URL的形式带参数
-      imageUrl: '/share/share.png', // 分享出去的图片，默认为当前页面的截图。图片路径可以是本地文件路径或者网络图片路径。支持PNG及JPG。
+  onReady: function () {    
+    const query = wx.createSelectorQuery()
+    query.select('#shareCanvas')
+        .fields({
+          id: true,
+          node: true,
+          size: true
+        })
+        .exec(this.init.bind(this));
+  },
+  init(res) {
+    const canvas = res[0].node
+    const ctx = canvas.getContext('2d')
+    const dpr = wx.getSystemInfoSync().pixelRatio
+    // 新接口需显示设置画布宽高；
+    canvas.width = res[0].width * dpr
+    canvas.height = res[0].height * dpr
+    ctx.scale(dpr, dpr);
+
+    this.setData({
+      canvas,
+      ctx
+    });
+
+    // 获取base64本地图片获取路径
+    var base64 =  this.data.userInfo.avatarUrl;//base64格式图片
+    var imgPath = wx.env.USER_DATA_PATH+'/index_'+Date.now()+ '.png';
+    //如果图片字符串不含要清空的前缀,可以不执行下行代码.
+    var imageData = base64.replace(/^data:image\/\w+;base64,/, "");
+    var fs = wx.getFileSystemManager();
+    fs.writeFileSync(imgPath, imageData, "base64");
+
+    //向画布载入图片的方法 
+    this.canvasDrawSignImg(imgPath);
+  },
+  canvasDraw(img1Url,img2Url) {
+
+    /** 多个图片合并的话，由于异步执行，由于尺寸原因可能存在img2渲染早于img，所以合并 */
+    /** 背景图片 img */
+    /** 模板图片 img2 */
+
+    let img = this.data.canvas.createImage();
+    img.onload = () => {
+      // 绘制图片 img
+      this.data.ctx.drawImage(img, 0, 0, 200, 200);
+      // img.complete表示图片是否加载完成，结果返回true和false;
+      if( img.complete ){
+        let img2 = this.data.canvas.createImage();
+        img2.onload = () => {
+          // 绘制图片 img2
+          this.data.ctx.drawImage(img2, 0, 0, 200, 200);
+        };
+        img2.src = img2Url;
+      }
     };
+    img.src = img1Url;
+
+  },
+  canvasDrawSignImg(imgUrl) {
+    
+    let img = this.data.canvas.createImage();
+    img.onload = () => {
+      // 绘制图片 img
+      this.data.ctx.drawImage(img, 0, 0, 200, 200);
+    };
+    img.src = imgUrl;
+
   },
 })

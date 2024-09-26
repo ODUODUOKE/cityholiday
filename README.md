@@ -23,4 +23,7 @@
 - [微信小程序图片裁剪功能的实现](https://blog.csdn.net/jimojianghu/article/details/129408840)
 - [实现微信小程序分享朋友圈及好友](https://blog.csdn.net/qq_39410252/article/details/121278343)
 - [图片压缩](http://v.yalijuda.com:32723/)
-- 【暂未解决】[微信签名生成图片回显错位 提示canvas-id已经存在](https://blog.csdn.net/qq_45016428/article/details/109594226)
+
+## 搭配食用
+- [微信小程序canvas画布新接口type为2D时drawImage方法的使用以及注意事项](https://blog.csdn.net/Mr_WangGeGe/article/details/106786818)
+- [微信签名生成图片回显错位 提示canvas-id已经存在](https://blog.csdn.net/qq_45016428/article/details/109594226)

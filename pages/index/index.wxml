@@ -1,19 +1,14 @@
-<!--index.wxml-->
+
 <scroll-view class="scrollarea" scroll-y type="list">
-  <view wx:if="{{!showTemplate}}" class="container">
+
+    <view style="display: {{showTemplate?'none':'flex'}}" class="container">
 
     <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-      </block>
-      <block wx:else>
-          <image wx:if="{{!hasNewImg}}" class="avatar" src="{{userInfo.avatarUrl}}"></image>
-          <canvas class="avatar" canvas-id="shareCanvas" ></canvas>
-      </block>
+          <canvas type="2d" disable-scroll="true" id="shareCanvas" class="avatar" ></canvas>
     </view>
-
-    <view class="usermotto">   
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+  
+    <view class="usermotto">
+      <block wx:if="{{!hasUserInfo}}">
         <!-- 微信侧获取头像的过于模糊 -->
         <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           微信头像
@@ -40,7 +35,7 @@
       </block>
     </view>
 
-    <view wx:if="{{canIUseNicknameComp && !hasUserInfo}}" class="text"> 
+    <view wx:if="{{!hasUserInfo}}" class="text">
       <text>1.微信头像请选择第一个按钮</text>
       <text>2.高清头像请选择第二个按钮</text>
       <text>3.应用未采集用户信息及数据</text>
@@ -51,12 +46,12 @@
       <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
 
 <view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick" data-img="{{templateImage.img_1001}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick" data-img="{{templateImage.img_1002}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick" data-img="{{templateImage.img_1003}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick" data-img="{{templateImage.img_1004}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick" data-img="{{templateImage.img_1005}}"></image>
- 
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick2" data-img="{{templateImage.img_1001}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick2" data-img="{{templateImage.img_1002}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick2" data-img="{{templateImage.img_1003}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick2" data-img="{{templateImage.img_1004}}"></image>
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick2" data-img="{{templateImage.img_1005}}"></image>
+
 </view>
 </view>
 
