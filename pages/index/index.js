@@ -25,11 +25,7 @@ Page({
     // 是否合并图片
     hasNewImg: false, // 不生效
     // 是否有用户信息
-    hasUserInfo: false,
-    // 是否可以使用getUserProfile
-    //canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-    // 是否可以使用button.open-type.getUserInfo
-    //canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+    hasUserInfo: false
   },
   // 选择模板
   selectTemplate: function() {
@@ -39,18 +35,20 @@ Page({
   },
   saveImgae: function(){
     // 你可以在这里执行进一步的操作，例如将图片保存到相册
-    wx.saveImageToPhotosAlbum({
-        filePath: this.data.userInfo.avatarUrl,
-        success: function() {
+    wx.canvasToTempFilePath({
+      canvas: this.data.canvas, // 使用2D 需要传递的参数
+      success(res) {
+        console.log(res.tempFilePath)
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success(res) { 
             wx.showToast({
-                title: '图片已保存到相册',
-                icon: 'success'
-            });
-        },
-        fail: function(err) {
-            console.error('保存图片失败:', err);
-        }
-    });
+              title: '保存成功，请在相册中查看',
+            })
+          }
+        })
+      }
+    })
   },
   // 点击图片
   onImageClick2: function(e) {
