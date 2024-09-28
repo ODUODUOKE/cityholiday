@@ -3,6 +3,7 @@
   "projectname": "china_city_holiday",
   "setting": {
     "compileHotReLoad": true,
-    "bigPackageSizeSupport": true
+    "bigPackageSizeSupport": true,
+    "urlCheck": false
   }
 }

@@ -21,7 +21,7 @@
         <button bindtap="restPhoto" >
           重选照片
         </button>
-        <button style="margin: 10px;" bindtap="selectTemplate" >
+        <button style="margin: 10px;" bindtap="againSelectTemplate" >
           重选模板
         </button>
         <button style="margin: 10px;background-color:#05be02f3;" bindtap="saveImgae" >
@@ -46,12 +46,15 @@
       <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
 
 <view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick2" data-img="{{templateImage.img_1001}}"></image>
+  <block wx:for="{{imageArray}}" wx:key="index">
+    <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{item}}" bindtap="onImageClick2" data-img="{{item}}"></image>
+  </block>
+  <!-- <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick2" data-img="{{templateImage.img_1001}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick2" data-img="{{templateImage.img_1002}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick2" data-img="{{templateImage.img_1003}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick2" data-img="{{templateImage.img_1004}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick2" data-img="{{templateImage.img_1005}}"></image>
-
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="https://kyh0104-1257003446.cos.ap-shanghai.myqcloud.com/image/head/china_win.webp" bindtap="onImageClick2" data-img="https://kyh0104-1257003446.cos.ap-shanghai.myqcloud.com/image/head/china_win.webp"></image> -->
 </view>
 </view>
 

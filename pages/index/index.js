@@ -25,13 +25,23 @@ Page({
     // 是否合并图片
     hasNewImg: false, // 不生效
     // 是否有用户信息
-    hasUserInfo: false
+    hasUserInfo: false,
+    imageCount: 25, // 假设我们有12张图片
+    imageArray: []
   },
   // 选择模板
   selectTemplate: function() {
     this.setData({
       showTemplate: !this.data.showTemplate
     })
+  },
+  // 重新选择模板
+  againSelectTemplate: function() {
+    this.setData({
+      showTemplate: true
+    });
+    var imgPath =  this.data.userInfo.avatarUrl;
+    this.canvasDrawSignImg(imgPath);
   },
   saveImgae: function(){
     // 你可以在这里执行进一步的操作，例如将图片保存到相册
@@ -57,23 +67,32 @@ Page({
         hidden: false, // 打开微信弹窗loding
         hasNewImg: true // 设置存在新图片
       });
-
       const timestamp = Date.now();
-
       // 获取base64本地图片获取路径
-      var base64 =  e.currentTarget.dataset.img;//base64格式图片
+      var base64 =  e.currentTarget.dataset.img//base64格式图片
       var imgPath = wx.env.USER_DATA_PATH+'/index_'+timestamp+ '.png';
       //如果图片字符串不含要清空的前缀,可以不执行下行代码.
       var imageData = base64.replace(/^data:image\/\w+;base64,/, "");
-      var fs = wx.getFileSystemManager();
-      fs.writeFileSync(imgPath, imageData, "base64");
+
+      // 通过正则表达式判断是否是图片（http or base64）
+      const imagePattern = /http(s)?:\/\/[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!$&'()*+,;=%]+/;
+      const isImage = imagePattern.test(imageData);
 
       let imgUrl;
-      if( this.data.userInfo.tmpAvatarUrl=='' ){
-        imgUrl = this.data.userInfo.avatarUrl;
+      if(isImage){
+        // http图片
+        imgUrl = imageData
       }else{
-        imgUrl = this.data.userInfo.tmpAvatarUrl;
+        // base64图片
+        var fs = wx.getFileSystemManager();
+        fs.writeFileSync(imgPath, imageData, "base64");
+        if( this.data.userInfo.tmpAvatarUrl=='' ){
+          imgUrl = this.data.userInfo.avatarUrl;
+        }else{
+          imgUrl = this.data.userInfo.tmpAvatarUrl;
+        }
       }
+      
        
       this.canvasDraw(imgUrl,imgPath);
 
@@ -150,6 +169,16 @@ Page({
         console.log(e);
       }
     });
+    this.generateImageArray();
+  },
+  generateImageArray: function() {
+    let imageArray = [];
+    for (let i = 1; i <= this.data.imageCount; i++) {
+      imageArray.push('https://kyh0104-1257003446.cos.ap-shanghai.myqcloud.com/image/head/' + i + '.png');
+    }
+    this.setData({
+      imageArray: imageArray
+    });
   },
   onReady: function () {    
     const query = wx.createSelectorQuery()
@@ -188,6 +217,8 @@ Page({
   },
   canvasDraw(img1Url,img2Url) {
 
+    console.log('.....---img1:',img1Url);
+    console.log('.....---img2:',img2Url);
     /** 多个图片合并的话，由于异步执行，由于尺寸原因可能存在img2渲染早于img，所以合并 */
     /** 背景图片 img */
     /** 模板图片 img2 */
@@ -198,12 +229,13 @@ Page({
       this.data.ctx.drawImage(img, 0, 0, 200, 200);
       // img.complete表示图片是否加载完成，结果返回true和false;
       if( img.complete ){
-        let img2 = this.data.canvas.createImage();
-        img2.onload = () => {
-          // 绘制图片 img2
-          this.data.ctx.drawImage(img2, 0, 0, 200, 200);
-        };
-        img2.src = img2Url;
+        /** 因为默认背景头像图片已经通过canvas绘制过一遍了，合成的模板图片只需要在基础上重新绘制一遍即可。 */
+        // let img2 = this.data.canvas.createImage();
+        // img2.onload = () => {
+        //   // 绘制图片 img2
+        //   this.data.ctx.drawImage(img2, 0, 0, 200, 200);
+        // };
+        // img2.src = img2Url;
       }
     };
     img.src = img1Url;
