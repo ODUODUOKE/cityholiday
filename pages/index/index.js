@@ -119,11 +119,11 @@ Page({
     // }
 
     /*网络地址图片*/
-    if( httpImgList.useStatus === 1 ){
-      for (let i = 0; i < httpImgList.imgList.length; i++) {
-        imageArray.push(httpImgList.imgList[i]);
-      }
-    }
+    // if( httpImgList.useStatus === 1 ){
+    //   for (let i = 0; i < httpImgList.imgList.length; i++) {
+    //     imageArray.push(httpImgList.imgList[i]);
+    //   }
+    // }
 
     this.setData({
       "imageConf.imageArray": imageArray
