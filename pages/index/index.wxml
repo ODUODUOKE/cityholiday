@@ -6,7 +6,7 @@
     <view class="userinfo">
           <canvas type="2d" disable-scroll="true" id="shareCanvas" class="avatar" ></canvas>
     </view>
-  
+
     <view class="usermotto">
       <block wx:if="{{!hasUserInfo}}">
         <!-- 微信侧获取头像的过于模糊 -->
@@ -43,18 +43,19 @@
 
   </view>
       <!-- 模板框 -->
-      <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;height:100vh;">
+      <view wx:if="{{showTemplate}}" style="display:flex;justify-content:center;align-items:center;">
 
 <view style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
-  <block wx:for="{{imageArray}}" wx:key="index">
-    <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{item}}" bindtap="onImageClick2" data-img="{{item}}"></image>
+  <block wx:for="{{imageConf.imageArray}}" wx:key="index">
+    <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{item}}" bindtap="onImageClick" data-img="{{item}}"></image>
   </block>
-  <!-- <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick2" data-img="{{templateImage.img_1001}}"></image>
+  <!--
+  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1001}}" bindtap="onImageClick2" data-img="{{templateImage.img_1001}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1002}}" bindtap="onImageClick2" data-img="{{templateImage.img_1002}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1003}}" bindtap="onImageClick2" data-img="{{templateImage.img_1003}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1004}}" bindtap="onImageClick2" data-img="{{templateImage.img_1004}}"></image>
   <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="{{templateImage.img_1005}}" bindtap="onImageClick2" data-img="{{templateImage.img_1005}}"></image>
-  <image class="avatar_template" style="margin: 10px;background-color: #0000004f;" src="https://kyh0104-1257003446.cos.ap-shanghai.myqcloud.com/image/head/china_win.webp" bindtap="onImageClick2" data-img="https://kyh0104-1257003446.cos.ap-shanghai.myqcloud.com/image/head/china_win.webp"></image> -->
+  -->
 </view>
 </view>
 
