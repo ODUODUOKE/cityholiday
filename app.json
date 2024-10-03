@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/clip/clipHeadImg",
     "pages/logs/logs"
   ],
   "window": {

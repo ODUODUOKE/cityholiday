@@ -52,7 +52,6 @@ Page({
   onChooseAvatar(e) {
     const { avatarUrl } = e.detail
 
-    console.log("获取微信授权头像:",avatarUrl);
     this.canvasDraw(avatarUrl);
 
     this.setData({
@@ -62,20 +61,31 @@ Page({
 
   },
   onReady: function () {
-    const query = wx.createSelectorQuery()
-    query.select('#shareCanvas')
-        .fields({
-          id: true,
-          node: true,
-          size: true
-        })
-        .exec(this.init.bind(this));
+
   },
-  onLoad() {
+  onLoad(option) {
     // 微信小程序分享
     this.initShare();
     // 初始化模板图片
     this.generateImageArray();
+
+    let that = this;
+
+    if( option.src != null  ){
+      // 获取src地址（裁切后图片文件地址）
+      that.canvasDraw2(option.src);
+    }else{
+      // 初始化画布并设置默认背景图片
+      const query = wx.createSelectorQuery()
+      query.select('#shareCanvas')
+          .fields({
+            id: true,
+            node: true,
+            size: true
+          })
+          .exec(this.init.bind(this));
+    }
+
   },
   /*分享功能*/
   initShare: function (){
@@ -152,10 +162,18 @@ Page({
     var fs = wx.getFileSystemManager();
     fs.writeFileSync(imgPath, imageData, "base64");
 
-    //向画布载入图片的方法
+    // 向画布载入图片的方法
     this.canvasDraw(imgPath);
   },
   canvasDraw(imgPath) {
+
+    console.log('打印data：',this.data);
+
+    const { canvas, ctx } = this.data;
+    if (!canvas || !ctx) {
+      console.error('Canvas or context is not initialized');
+      return ;
+    }
 
     // 清空画布 （ps：此处不需要清空画布，否则就需要绘制2次：背景、模板图片）
     //this.data.ctx.clearRect(0, 0, 200, 200);
@@ -179,6 +197,52 @@ Page({
     };
     img.src = imgPath;
 
+  },
+  /*上传文件-绘制头像背景200X200*/
+  canvasDraw2(imgPath){
+
+    /*重新初始化canvas，已解决：Canvas or context is not initialized*/
+
+    const query = wx.createSelectorQuery()
+    query.select('#shareCanvas')
+        .fields({
+          id: true,
+          node: true,
+          size: true
+        })
+        .exec(
+            (res) => {
+              const canvas = res[0].node
+              const ctx = canvas.getContext('2d')
+              const dpr = wx.getSystemInfoSync().pixelRatio
+              // 新接口需显示设置画布宽高；
+              canvas.width = res[0].width * dpr
+              canvas.height = res[0].height * dpr
+              ctx.scale(dpr, dpr);
+
+              // 清空画布区域
+              ctx.clearRect(0, 0, 200, 200);
+
+              // 重新设置canvas对象信息
+              this.setData({
+                canvas,
+                ctx
+              });
+
+              // 重新执行上传本地图片业务流程逻辑
+              this.setData({
+                "userInfo.avatarUrl": imgPath,
+                hasUserInfo: true
+              })
+              let img = canvas.createImage();
+              img.onload = () => {
+                // 绘制图片 img
+                ctx.drawImage(img, 0, 0, 200, 200);
+              };
+              img.src = imgPath;
+
+            }
+        );
   },
   // 选择模板
   selectTemplate: function() {
@@ -261,21 +325,29 @@ Page({
   },
   // 上传图片（本地缓存目录，非上传微信）
   uploadImg: function (){
-    var that = this;
     wx.chooseMedia({
       count: 1, // 最多可以选择的文件个数
       mediaType: ['image'], // 文件类型
       sizeType: ['original'], // 是否压缩所选文件
       sourceType: ['album'], // 可以指定来源是相册`album`还是相机`camera`，默认二者都有
       success(result) {
-        that.setData({
-          "userInfo.avatarUrl": result.tempFiles[0].tempFilePath,
-          hasUserInfo: true
-        })
 
+        /*原上传图片业务逻辑流程，后续步骤在`canvasDraw2`执行*/
+        // that.setData({
+        //   "userInfo.avatarUrl": result.tempFiles[0].tempFilePath,
+        //   hasUserInfo: true
+        // })
         //向画布载入图片的方法
-        that.canvasDraw(result.tempFiles[0].tempFilePath);
+        //that.canvasDraw(result.tempFiles[0].tempFilePath);
 
+        // 跳转裁切
+        // wx.navigateTo({
+        //   url: '/pages/clip/clipHeadImg?src=' + result.tempFiles[0].tempFilePath,
+        // })
+
+        wx.redirectTo({
+          url: '/pages/clip/clipHeadImg?src=' + result.tempFiles[0].tempFilePath,
+        })
 
       },
     })

@@ -1,0 +1,19 @@
+
+<import src="../../utils/weCropper/we-cropper"></import>
+
+
+<view class="cropper-wrapper">
+  <template is="we-cropper" data="{{...cropperOpt}}"/>
+  <cover-view class="cropper-buttons" style="color: {{cropperOpt.boundStyle.color}}">
+    <cover-view
+      class="upload btn"
+      bindtap="cancel">
+      取消
+    </cover-view>
+    <cover-view
+      class="upload btn"
+      bindtap="getCropperImage">
+      确定
+    </cover-view>
+  </cover-view>
+</view>
