@@ -22,10 +22,10 @@ Page({
       scale: 2.5,
       zoom: 8,
       cut: {
-        x: (width - 300) / 2,
-        y: (height - 260) / 2,
-        width: 300,
-        height: 260
+        x: (width - 200) / 2,
+        y: (height - 200) / 2,
+        width: 200,
+        height: 200
       },
       boundStyle: {
         color: "green",
@@ -142,7 +142,7 @@ Page({
         const fileName = `${timeStamp}.${nameLast}`
         console.log('打印裁切图片名称:',fileName);
 
-        wx.navigateTo({
+        wx.redirectTo({
           url: '/pages/index/index?src=' + src,
         })
 
